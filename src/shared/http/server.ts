@@ -31,15 +31,15 @@ app.use(
     nextFunction: NextFunction,
   ) => {
     if (error instanceof AppError) {
-      return response.status(error.statusCode).json({
-        status: 'error',
-        message: error.message,
+      return response.status(error.status).json({
+        status: error.status,
+        mensagem: error.mensagem,
       });
     }
 
     return response.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
+      status: 500,
+      mensagem: 'Erro interno do servidor',
     });
   },
 );

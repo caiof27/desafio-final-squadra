@@ -1,13 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('uf')
 class Uf {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   codigoUF: number;
 
   @Column()
   sigla: string;
 
-  @Column('decimal')
+  @Column()
   nome: string;
 
   @Column('int')
