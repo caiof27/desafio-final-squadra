@@ -25,12 +25,15 @@ class PutMunicipioService {
       throw new AppError('Municipio não encontrado', 404);
     }
     if (nome === municipio[0].nome) {
-      throw new AppError('Já existe um UF cadastrado com esse nome!', 404);
+      throw new AppError(
+        'Já existe um Municipio cadastrado com esse nome!',
+        404,
+      );
     }
 
     if (status !== 1 && status !== 2) {
       throw new AppError(
-        'Não foi possível incluir UF no banco de dados. Status precisa ser do valor 1 ou 2',
+        'Não foi possível incluir Municipio no banco de dados. Status precisa ser do valor 1 ou 2',
         404,
       );
     }
