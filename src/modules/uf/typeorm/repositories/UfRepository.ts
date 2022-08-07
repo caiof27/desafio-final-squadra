@@ -16,7 +16,7 @@ class UfRepository extends Repository<Uf> {
     return uf;
   }
   public async findByStatus(status: number): Promise<Uf[] | undefined> {
-    const uf = await this.find({ where: { status }, take: 1 });
+    const uf = await this.find({ where: { status } });
     return uf;
   }
   public async findBySiglaNome(

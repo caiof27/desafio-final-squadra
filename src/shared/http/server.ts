@@ -38,8 +38,8 @@ app.use(
     }
 
     return response.status(500).json({
-      status: 500,
-      mensagem: 'Erro interno do servidor',
+      status: error.name,
+      mensagem: error.message,
     });
   },
 );

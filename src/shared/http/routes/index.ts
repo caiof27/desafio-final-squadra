@@ -7,6 +7,7 @@ import profileRouter from '@modules/users/routes/profile.routes';
 import customersRouter from '@modules/customers/routes/customers.routes';
 import ordersRouter from '@modules/orders/routes/orders.routes';
 import ufRouter from '@modules/uf/routes/uf.routes';
+import municipioRouter from '@modules/municipio/routes/municipio.routes';
 
 const routes = Router();
 
@@ -18,5 +19,6 @@ routes.use('/profile', profileRouter);
 routes.use('/customers', customersRouter);
 routes.use('/orders', ordersRouter);
 routes.use('/uf', ufRouter);
+routes.use('/municipio', municipioRouter);
 
 export default routes;
