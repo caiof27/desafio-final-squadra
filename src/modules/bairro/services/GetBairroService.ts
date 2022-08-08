@@ -25,15 +25,6 @@ class GetBairroService {
       return bairro;
     }
 
-    if (codigoMunicipio && nome) {
-      const bairro = await bairroRepository.findByCodigoMunicipioNome(
-        codigoMunicipio,
-        nome,
-      );
-
-      return bairro;
-    }
-
     if (codigoBairro) {
       const bairro = await bairroRepository.findBycodigoBairro(codigoBairro);
 

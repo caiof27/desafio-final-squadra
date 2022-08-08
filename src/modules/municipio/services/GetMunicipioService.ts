@@ -25,15 +25,6 @@ class GetMunicipioService {
       return municipio;
     }
 
-    if (codigoUF && nome) {
-      const municipio = await municipioRepository.findByCodMunicipioNome(
-        codigoUF,
-        nome,
-      );
-
-      return municipio;
-    }
-
     if (codigoMunicipio) {
       const municipio = await municipioRepository.findBycodigoMunicipio(
         codigoMunicipio,

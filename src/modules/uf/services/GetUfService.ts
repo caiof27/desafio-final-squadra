@@ -25,24 +25,6 @@ class GetUfService {
       return uf;
     }
 
-    if (nome && sigla) {
-      const uf = await ufRepository.findBySiglaNome(sigla, nome);
-
-      return uf;
-    }
-
-    if (codigoUF && sigla) {
-      const uf = await ufRepository.findByUfSigla(codigoUF, sigla);
-
-      return uf;
-    }
-
-    if (codigoUF && nome) {
-      const uf = await ufRepository.findByUfnome(codigoUF, nome);
-
-      return uf;
-    }
-
     if (codigoUF) {
       const uf = await ufRepository.findBycodigoUF(codigoUF);
 

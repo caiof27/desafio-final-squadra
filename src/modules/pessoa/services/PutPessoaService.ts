@@ -4,17 +4,15 @@ import Bairro from '@modules/bairro/typeorm/entities/Bairro';
 import BairroRepository from '@modules/bairro/typeorm/repositories/BairroRepository';
 
 interface IRequest {
-  codigoBairro: number;
-  codigoMunicipio: number;
-  nome: string;
+  codigoPessoa: number;
+  login: number;
   status: number;
 }
 
-class PutBairroService {
+class PutPessoaService {
   public async execute({
-    codigoBairro,
-    codigoMunicipio,
-    nome,
+    codigoPessoa,
+    login,
     status,
   }: IRequest): Promise<Bairro[]> {
     const bairroRepository = getCustomRepository(BairroRepository);
@@ -24,9 +22,7 @@ class PutBairroService {
     if (!bairro) {
       throw new AppError('Bairo não encontrado', 404);
     }
-
-    const nomeExists = await bairroRepository.findByNome(nome);
-    if (nomeExists) {
+    if (nome === bairro.nome) {
       throw new AppError('Já existe um Bairro cadastrado com esse nome!', 404);
     }
 
@@ -49,4 +45,4 @@ class PutBairroService {
   }
 }
 
-export default PutBairroService;
+export default PutPessoaService;

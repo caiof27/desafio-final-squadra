@@ -22,11 +22,7 @@ class PostBairroService {
       MunicipioRepository,
     ).findBycodigoMunicipio(codigoMunicipio);
 
-    if (
-      !codigoMunicipioExists ||
-      (typeof codigoMunicipioExists !== 'undefined' &&
-        codigoMunicipioExists.length === 0)
-    ) {
+    if (!codigoMunicipioExists) {
       throw new AppError(
         'Não foi possível incluir Bairro no banco de dados. Codigo Municipio inserido não existe',
         404,
@@ -34,7 +30,7 @@ class PostBairroService {
     }
 
     const bairro = bairroRepository.create({
-      municipio: codigoMunicipioExists[0],
+      municipio: codigoMunicipioExists,
       nome,
       status,
     });

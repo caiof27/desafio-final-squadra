@@ -19,12 +19,17 @@ class PutMunicipioService {
   }: IRequest): Promise<Municipio[]> {
     const municipioRepository = getCustomRepository(MunicipioRepository);
 
-    const municipio = await municipioRepository.findBycodigoUF(codigoMunicipio);
+    const municipio = await municipioRepository.findBycodigoMunicipio(
+      codigoMunicipio,
+    );
 
-    if (!municipio || municipio?.length === 0) {
+    if (!municipio) {
       throw new AppError('Municipio não encontrado', 404);
     }
-    if (nome === municipio[0].nome) {
+
+    const nomeExists = await municipioRepository.findByNome(nome);
+
+    if (nomeExists) {
       throw new AppError(
         'Já existe um Municipio cadastrado com esse nome!',
         404,
@@ -38,9 +43,9 @@ class PutMunicipioService {
       );
     }
 
-    municipio[0].nome = nome;
-    municipio[0].codigoUF = codigoUF;
-    municipio[0].status = status;
+    municipio.nome = nome;
+    municipio.codigoUF = codigoUF;
+    municipio.status = status;
 
     await municipioRepository.save(municipio);
 

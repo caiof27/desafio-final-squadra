@@ -13,20 +13,20 @@ class PostUfService {
   public async execute({ sigla, nome, status }: IRequest): Promise<Uf[]> {
     const ufRepository = getCustomRepository(UfRepository);
 
-    const siglaExists = await ufRepository.findBySigla(sigla);
+    const nomeExists = await ufRepository.findByNome(nome);
 
-    if (typeof siglaExists !== 'undefined' && siglaExists.length > 0) {
+    if (nomeExists) {
       throw new AppError(
-        'Não foi possível incluir UF no banco de dados. Sigla já está sendo utilizada',
+        'Não foi possível incluir UF no banco de dados. Nome já está sendo utilizada',
         404,
       );
     }
 
-    const nomeExists = await ufRepository.findByNome(nome);
+    const siglaExists = await ufRepository.findBySigla(sigla);
 
-    if (typeof nomeExists !== 'undefined' && nomeExists.length > 0) {
+    if (siglaExists) {
       throw new AppError(
-        'Não foi possível incluir UF no banco de dados. Nome já está sendo utilizada',
+        'Não foi possível incluir UF no banco de dados. Sigla já está sendo utilizada',
         404,
       );
     }

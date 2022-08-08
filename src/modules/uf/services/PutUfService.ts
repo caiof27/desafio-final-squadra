@@ -21,14 +21,19 @@ class PutUfService {
 
     const uf = await ufRepository.findBycodigoUF(codigoUF);
 
-    if (!uf || uf?.length === 0) {
+    if (!uf) {
       throw new AppError('UF não encontrado', 404);
     }
-    if (nome === uf[0].nome) {
+
+    const nomeExists = await ufRepository.findByNome(nome);
+
+    if (nomeExists) {
       throw new AppError('Já existe um UF cadastrado com esse nome!', 404);
     }
 
-    if (sigla === uf[0].sigla) {
+    const siglaExists = await ufRepository.findBySigla(sigla);
+
+    if (siglaExists) {
       throw new AppError('Já existe um UF cadastrado com essa sigla!', 404);
     }
 
@@ -39,9 +44,9 @@ class PutUfService {
       );
     }
 
-    uf[0].nome = nome;
-    uf[0].sigla = sigla;
-    uf[0].status = status;
+    uf.nome = nome;
+    uf.sigla = sigla;
+    uf.status = status;
 
     await ufRepository.save(uf);
 

@@ -22,10 +22,7 @@ class PostMunicipioService {
       UfRepository,
     ).findBycodigoUF(codigoUF);
 
-    if (
-      !codigoUFExists ||
-      (typeof codigoUFExists !== 'undefined' && codigoUFExists.length === 0)
-    ) {
+    if (!codigoUFExists) {
       throw new AppError(
         'Não foi possível incluir Municipio no banco de dados. Codigo UF inserido não existe',
         404,
@@ -34,7 +31,7 @@ class PostMunicipioService {
 
     const nomeExists = await municipioRepository.findByNome(nome);
 
-    if (typeof nomeExists !== 'undefined' && nomeExists.length > 0) {
+    if (nomeExists) {
       throw new AppError(
         'Não foi possível incluir Municipio no banco de dados. Nome já está sendo utilizada',
         404,
@@ -42,7 +39,7 @@ class PostMunicipioService {
     }
 
     const municipio = municipioRepository.create({
-      uf: codigoUFExists[0],
+      uf: codigoUFExists,
       nome,
       status,
     });
