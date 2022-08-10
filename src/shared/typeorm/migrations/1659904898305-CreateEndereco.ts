@@ -19,7 +19,7 @@ export class CreateEndereco1659904898305 implements MigrationInterface {
           },
           {
             name: 'numero',
-            type: 'int',
+            type: 'string',
           },
           {
             name: 'complemento',

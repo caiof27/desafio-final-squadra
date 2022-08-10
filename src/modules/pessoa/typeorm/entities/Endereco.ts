@@ -12,7 +12,7 @@ class Endereco {
   @PrimaryGeneratedColumn()
   codigoEndereco: number;
 
-  @ManyToOne(() => Pessoa, Pessoa => Pessoa.endereco)
+  @ManyToOne(() => Pessoa, Pessoa => Pessoa.enderecos)
   @JoinColumn({ name: 'codigoPessoa' })
   pessoa: Pessoa;
 

@@ -8,44 +8,58 @@ export default class PessoaController {
     const codigoPessoa = parseInt(request.query.codigoPessoa as string);
     const login = request.query.login as string;
     const status = parseInt(request.query.status as string);
-    const getBairro = new GetPessoaService();
-    const bairro = await getBairro.execute({
+    const getPessoa = new GetPessoaService();
+    const pessoa = await getPessoa.execute({
       codigoPessoa,
       login,
       status,
     });
 
-    return response.json(bairro);
+    return response.json(pessoa);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { nome, sobrenome, idade, login, senha, status, endereco } =
+    const { nome, sobrenome, idade, login, senha, status, enderecos } =
       request.body;
-    const createBairro = new PostPessoaService();
+    const createPessoa = new PostPessoaService();
 
-    const pessoa = await createBairro.execute({
+    const pessoa = await createPessoa.execute({
       nome,
       sobrenome,
       idade,
       login,
       senha,
       status,
-      endereco,
+      enderecos,
     });
 
     return response.json(pessoa);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { codigoPessoa, login, status } = request.body;
-    const putBairro = new PutPessoaService();
-
-    const bairro = await putBairro.execute({
+    const {
       codigoPessoa,
+      nome,
+      sobrenome,
+      idade,
       login,
+      senha,
       status,
+      enderecos,
+    } = request.body;
+    const putPessoa = new PutPessoaService();
+
+    const pessoa = await putPessoa.execute({
+      codigoPessoa,
+      nome,
+      sobrenome,
+      idade,
+      login,
+      senha,
+      status,
+      enderecos,
     });
 
-    return response.json(bairro);
+    return response.json(pessoa);
   }
 }

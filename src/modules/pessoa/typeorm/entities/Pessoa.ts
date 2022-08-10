@@ -11,8 +11,8 @@ class Pessoa {
   @Column()
   sobrenome: string;
 
-  @Column('int')
-  idade: number;
+  @Column()
+  idade: string;
 
   @Column()
   login: string;
@@ -24,7 +24,7 @@ class Pessoa {
   status: number;
 
   @OneToMany(() => Endereco, Endereco => Endereco.pessoa)
-  endereco: Endereco[];
+  enderecos: Endereco[];
 }
 
 export default Pessoa;

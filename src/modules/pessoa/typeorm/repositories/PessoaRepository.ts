@@ -6,41 +6,40 @@ class PessoaRepository extends Repository<Pessoa> {
   public async findAll(): Promise<Pessoa[] | undefined> {
     const pessoa = await this.find();
 
-    let aux = 0;
-
-    while (aux < pessoa.length) {
-      pessoa[aux].endereco = [];
-      aux++;
+    for (let aux = 0; aux < pessoa.length; aux++) {
+      pessoa[aux].enderecos = [];
     }
 
     return pessoa;
   }
   public async findBycodigoPessoa(
     codigoPessoa: number,
-  ): Promise<Pessoa[] | undefined> {
+  ): Promise<Pessoa | undefined> {
     const pessoa = await this.createQueryBuilder('pessoa')
-      .leftJoinAndSelect('pessoa.endereco', 'endereco')
+      .leftJoinAndSelect('pessoa.enderecos', 'endereco')
+      .leftJoinAndSelect('endereco.bairro', 'bairro')
+      .leftJoinAndSelect('bairro.municipio', 'municipio')
+      .leftJoinAndSelect('municipio.uf', 'uf')
       .where('pessoa.codigoPessoa = :codigoPessoa', {
         codigoPessoa: codigoPessoa,
       })
-      .getMany();
+      .getOne();
     return pessoa;
   }
   public async findByLogin(login: string): Promise<Pessoa[] | undefined> {
     const pessoa = await this.find({ where: { login } });
 
-    pessoa[0].endereco = [];
+    for (let aux = 0; aux < pessoa.length; aux++) {
+      pessoa[aux].enderecos = [];
+    }
 
     return pessoa;
   }
   public async findByStatus(status: number): Promise<Pessoa[] | undefined> {
     const pessoa = await this.find({ where: { status } });
 
-    let aux = 0;
-
-    while (aux < pessoa.length) {
-      pessoa[aux].endereco = [];
-      aux++;
+    for (let aux = 0; aux < pessoa.length; aux++) {
+      pessoa[aux].enderecos = [];
     }
 
     return pessoa;

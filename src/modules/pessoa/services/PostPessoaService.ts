@@ -16,11 +16,11 @@ interface IEndereco {
 interface IRequest {
   nome: string;
   sobrenome: string;
-  idade: number;
+  idade: string;
   login: string;
   senha: string;
   status: number;
-  endereco: IEndereco[];
+  enderecos: IEndereco[];
 }
 
 class PostPessoaService {
@@ -31,25 +31,31 @@ class PostPessoaService {
     login,
     senha,
     status,
-    endereco,
+    enderecos,
   }: IRequest): Promise<Pessoa[]> {
     const pessoaRepository = getCustomRepository(PessoaRepository);
     const enderecoRepository = getCustomRepository(EnderecoRepository);
 
-    let aux = 0;
-
-    while (aux < endereco.length) {
+    for (let aux = 0; aux < enderecos.length; aux++) {
       const codigoBairroExists = await getCustomRepository(
         BairroRepository,
-      ).findBycodigoBairro(endereco[aux].codigoBairro);
+      ).findBycodigoBairro(enderecos[aux].codigoBairro);
 
       if (!codigoBairroExists) {
         throw new AppError(
-          'Não foi possível incluir Bairro no banco de dados. Codigo Municipio inserido não existe',
+          'Não foi possível incluir Bairro no banco de dados. Codigo Bairro inserido não existe',
           404,
         );
       }
-      aux++;
+    }
+
+    const loginExists = await pessoaRepository.findByLogin(login);
+
+    if (!loginExists) {
+      throw new AppError(
+        'Não foi possível incluir Pessoa no banco de dados. Login inserido já existe',
+        404,
+      );
     }
 
     let pessoa = pessoaRepository.create({
@@ -63,26 +69,21 @@ class PostPessoaService {
 
     pessoa = await pessoaRepository.save(pessoa);
 
-    aux = 0;
-
-    while (aux < endereco.length) {
-      // eslint-disable-next-line prefer-const
-      let codigoBairroExists = await getCustomRepository(
+    for (let aux = 0; aux < enderecos.length; aux++) {
+      const codigoBairroExists = await getCustomRepository(
         BairroRepository,
-      ).findBycodigoBairro(endereco[aux].codigoBairro);
+      ).findBycodigoBairro(enderecos[aux].codigoBairro);
 
-      // eslint-disable-next-line prefer-const
-      let enderecoCreate = enderecoRepository.create({
+      const enderecoCreate = enderecoRepository.create({
         bairro: codigoBairroExists,
         codigoPessoa: pessoa.codigoPessoa,
-        nomeRua: endereco[aux].nomeRua,
-        numero: endereco[aux].numero,
-        complemento: endereco[aux].complemento,
-        cep: endereco[aux].cep,
+        nomeRua: enderecos[aux].nomeRua,
+        numero: enderecos[aux].numero,
+        complemento: enderecos[aux].complemento,
+        cep: enderecos[aux].cep,
       });
 
       await enderecoRepository.save(enderecoCreate);
-      aux++;
     }
 
     const pessoaReturn = await pessoaRepository.find();
